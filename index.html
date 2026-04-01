@@ -16,7 +16,6 @@
         h1 { color: #ff4d6d; font-size: 1.6rem; margin-bottom: 10px; }
         #msg { font-size: 1rem; line-height: 1.5; color: #666; min-height: 60px; }
         .countdown-box { margin-top: 25px; font-size: 0.8rem; letter-spacing: 2px; color: #ff85a1; font-weight: bold; text-transform: uppercase; }
-        .timezone-note { font-size: 0.7rem; color: #bbb; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -32,25 +31,16 @@
         </div>
     </div>
     <div class="countdown-box" id="countdown">Calculating...</div>
-    <div class="timezone-note">Sending love from 🇮🇳 to 🇨🇦</div>
 </div>
 
 <script>
     const schedule = {
-        "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "https://m.media-amazon.com/images/I/71N-Mv+S7tL._AC_SL1500_.jpg" },
-        "4-2":  { name: "Fuggler", msg: "Cuddleton is napping, so he sent this chaotic Fuggler to guard the site. 12 days to go! 👹✨", img: "https://m.media-amazon.com/images/I/71XmC6-iYPL._AC_SL1500_.jpg" },
-        "4-3":  { name: "Waddleton Jr", msg: "Another Waddleton? Because one isn't enough for how good you are! 🐧", img: "https://m.media-amazon.com/images/I/61S1A86M4FL._AC_SL1500_.jpg" },
-        "4-4":  { name: "Levi Plush", msg: "Give up on your dreams and die... just kidding! Levi is here to protect your birthday month. ⚔️", img: "https://m.media-amazon.com/images/I/61M6XjS6p5L._AC_SL1000_.jpg" },
-        "4-5":  { name: "Golden Retriever", msg: "A loyal pup for a loyal friend. Hope your day in Canada is as bright as his fur! 🐾", img: "https://m.media-amazon.com/images/I/71-08-N9DML._AC_SL1500_.jpg" },
-        "4-6":  { name: "Sleepy Koala", msg: "Sending sleepy India hugs to you. You deserve all the rest and happiness. 🐨💤", img: "https://m.media-amazon.com/images/I/71Uo7I2p0PL._AC_SL1500_.jpg" },
-        "4-7":  { name: "Axolotl", msg: "You're 'axolotl' special! Just checking in to make sure you're smiling today. 🌸", img: "https://m.media-amazon.com/images/I/61-9f9S7xFL._AC_SL1500_.jpg" },
-        "4-8":  { name: "Capybara", msg: "The king of chill. Take it easy today, you're doing great. 🍊", img: "https://m.media-amazon.com/images/I/61lS9t8Wk3L._AC_SL1500_.jpg" },
-        "4-9":  { name: "Dino-Tea", msg: "A Tea-Rex! Stay cozy and warm while you wait for the 14th. 🦖☕", img: "https://m.media-amazon.com/images/I/61O2h9eTebL._AC_SL1200_.jpg" },
-        "4-10": { name: "B-Day Cat", msg: "Almost there! This cat is getting the party hats ready. 🐱🎂", img: "https://m.media-amazon.com/images/I/71m0e-O-8ML._AC_SL1500_.jpg" },
-        "4-11": { name: "Star Plush", msg: "You're a star in every time zone. Shine bright today! ⭐", img: "https://m.media-amazon.com/images/I/61y8B2Wz3EL._AC_SL1500_.jpg" },
-        "4-12": { name: "Highland Cow", msg: "The fluffiest friend for the final countdown. 2 days left! 🐮☁️", img: "https://m.media-amazon.com/images/I/71p0WfO5ZDL._AC_SL1500_.jpg" },
-        "4-13": { name: "Mystery Box", msg: "The big surprise is arriving tomorrow... are you ready? 🎁✨", img: "https://m.media-amazon.com/images/I/61z7-YjZ2LL._AC_SL1000_.jpg" },
-        "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. Enjoy your day! 🎉🎈", video: "https://www.w3schools.com/html/mov_bbb.mp4" } // REPLACE THIS URL WITH YOUR VIDEO LINK
+        "3-31": { name: "Waddleton", msg: "Meet Waddleton! Just letting you know how good you are and that you deserve the cutest birthday wishes ever. 🐧✨", img: "https://i.imgur.com/XpA9vS5.png" },
+        "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "https://i.imgur.com/W29q55X.png" },
+        "4-2":  { name: "Fuggler", msg: "Cuddleton is napping, so he sent this chaotic Fuggler to guard the site. 12 days to go! 👹✨", img: "https://i.imgur.com/vHq0L9s.png" },
+        "4-3":  { name: "Waddleton Jr", msg: "Another Waddleton? Because one isn't enough for how good you are! 🐧", img: "https://i.imgur.com/XpA9vS5.png" },
+        "4-4":  { name: "Levi Plush", msg: "Give up on your dreams... just kidding! Levi is here to protect your birthday month. ⚔️", img: "https://i.imgur.com/Y4N4G8i.png" },
+        "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. 🎉🎈", img: "https://i.imgur.com/p2zS03x.png" }
     };
 
     function addMoreFlowers() {
@@ -65,26 +55,12 @@
         const data = schedule[key] || { msg: "The squad is taking a break! Check back tomorrow.", img: "https://via.placeholder.com/300?text=Next+Friend+Coming+Soon" };
 
         const container = document.getElementById('media-container');
-        
-        if (data.video) {
-            container.innerHTML = `<video controls autoplay loop><source src="${data.video}" type="video/mp4">Your browser does not support the video tag.</video>`;
-        } else {
-            container.innerHTML = `<img src="${data.img}" alt="Plushie">`;
-        }
-
+        container.innerHTML = `<img src="${data.img}" alt="Plushie">`;
         document.getElementById('msg').innerText = data.msg;
 
         if (m === 4 && d === 14) {
             document.getElementById('header').innerText = "HAPPY BIRTHDAY, E! 🎉";
-            const duration = 15 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-            }, 250);
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
 
         const bday = new Date(2026, 3, 14);
