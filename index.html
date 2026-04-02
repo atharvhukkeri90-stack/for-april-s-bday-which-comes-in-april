@@ -35,28 +35,27 @@
 
 <script>
     const schedule = {
-        "3-31": { name: "Waddleton", msg: "...", img: "waddleton.jpg" }, // Upload waddleton too if you have it!
-        "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "22059.60_2_500.webp" },
+        "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "cuddleton.webp" },
         "4-2":  { name: "Fuggler", msg: "Cuddleton is napping, so he sent this chaotic Fuggler to guard the site. 12 days to go! 👹✨", img: "fuggler.webp" },
-        "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. 🎉🎈", img: "fuggler.webp" },
+        "4-3":  { name: "Waddleton Jr", msg: "Another Waddleton? Because one isn't enough for how good you are! 🐧", img: "waddleton.webp" },
+        "4-4":  { name: "Levi Plush", msg: "Levi is here to protect your birthday month. No titans allowed! ⚔️", img: "levi.webp" },
+        "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. 🎉🎈", img: "ebear.webp" }
     };
 
     function addMoreFlowers() {
-        function addMoreFlowers() {
         const now = new Date();
         const day = now.getDate();
         
-        // As the date goes from 2 to 14, the "Grandeur" increases!
-        // We calculate a multiplier based on the day of April
-        const intensity = Math.min(day * 15, 300); // Caps at 300 particles for the 14th
-        const scale = 1 + (day / 14); // Confetti pieces get physically bigger too!
+        // Intensity grows as we get closer to the 14th
+        const count = Math.min(day * 10, 250); 
+        const size = 0.8 + (day / 10); 
 
-        confetti({ 
-            particleCount: intensity, 
-            spread: 50 + (day * 5), // Spread gets wider every day
-            scalar: scale, 
-            colors: ['#ff85a1', '#fbb1bd', '#ffde00', '#ff4d6d'], 
-            origin: { x: 0.9, y: 0.9 } 
+        confetti({
+            particleCount: count,
+            spread: 70 + (day * 2),
+            scalar: size,
+            origin: { x: 0.9, y: 0.9 },
+            colors: ['#ff85a1', '#fbb1bd', '#ffde00', '#ff4d6d']
         });
     }
 
@@ -68,62 +67,43 @@
         const data = schedule[key] || { msg: "The squad is taking a break! Check back tomorrow.", img: "loading.webp" };
 
         const imgElement = document.getElementById('plushie-img');
-        imgElement.src = data.img;
-        document.getElementById('msg').innerText = data.msg;
+        if (imgElement) {
+            imgElement.src = data.img;
+        }
+        
+        const msgElement = document.getElementById('msg');
+        if (msgElement) {
+            msgElement.innerText = data.msg;
+        }
 
-        // BIRTHDAY SPECIAL: Automatic Grand Confetti Cannon
+        // Automatic Grand Birthday Rain on the 14th
         if (m === 4 && d === 14) {
-            document.getElementById('header').innerText = "HAPPY BIRTHDAY, E! 🎉";
+            const bdayHeader = document.getElementById('header');
+            if (bdayHeader) bdayHeader.innerText = "HAPPY BIRTHDAY, E! 🎉";
             
-            // This creates a continuous "rain" of grand confetti for the big day
-            var end = Date.now() + (15 * 1000);
-            var colors = ['#ff4d6d', '#ffde00', '#ffffff'];
-
+            var end = Date.now() + (10 * 1000);
             (function frame() {
-              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors, scalar: 2 });
-              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors, scalar: 2 });
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame);
-              }
+              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, scalar: 2 });
+              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, scalar: 2 });
+              if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
 
-        const bday = new Date(2026, 3, 14);
-        const diff = bday - now;
-        if (diff > 0) {
-            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('countdown').innerText = `✨ ${days} DAYS UNTIL THE SURPRISE ✨`;
-        } else {
-            document.getElementById('countdown').innerText = "IT'S YOUR DAY! 🎉";
-        }
-    }    }
-
-    function updateDisplay() {
-        const now = new Date();
-        const m = now.getMonth() + 1;
-        const d = now.getDate();
-        const key = `${m}-${d}`;
-        const data = schedule[key] || { msg: "The squad is taking a break! Check back tomorrow.", img: "https://via.placeholder.com/300?text=Next+Friend+Coming+Soon" };
-
-        document.getElementById('plushie-img').src = data.img;
-        document.getElementById('msg').innerText = data.msg;
-
-        if (m === 4 && d === 14) {
-            document.getElementById('header').innerText = "HAPPY BIRTHDAY, E! 🎉";
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
-
-        const bday = new Date(2026, 3, 14);
-        const diff = bday - now;
-        if (diff > 0) {
-            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('countdown').innerText = `✨ ${days} DAYS UNTIL THE SURPRISE ✨`;
-        } else {
-            document.getElementById('countdown').innerText = "IT'S YOUR DAY! 🎉";
+        const countdownElement = document.getElementById('countdown');
+        if (countdownElement) {
+            const bdayDate = new Date(2026, 3, 14);
+            const diff = bdayDate - now;
+            if (diff > 0) {
+                const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+                countdownElement.innerText = `✨ ${days} DAYS UNTIL THE SURPRISE ✨`;
+            } else {
+                countdownElement.innerText = "IT'S YOUR DAY! 🎉";
+            }
         }
     }
-    updateDisplay();
+    
+    // Run the update when page loads
+    window.onload = updateDisplay;
 </script>
 </body>
 </html>
