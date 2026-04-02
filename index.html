@@ -42,8 +42,62 @@
     };
 
     function addMoreFlowers() {
-        confetti({ particleCount: 40, spread: 50, colors: ['#ff85a1', '#fbb1bd', '#ffde00'], origin: { x: 0.9, y: 0.9 } });
+        function addMoreFlowers() {
+        const now = new Date();
+        const day = now.getDate();
+        
+        // As the date goes from 2 to 14, the "Grandeur" increases!
+        // We calculate a multiplier based on the day of April
+        const intensity = Math.min(day * 15, 300); // Caps at 300 particles for the 14th
+        const scale = 1 + (day / 14); // Confetti pieces get physically bigger too!
+
+        confetti({ 
+            particleCount: intensity, 
+            spread: 50 + (day * 5), // Spread gets wider every day
+            scalar: scale, 
+            colors: ['#ff85a1', '#fbb1bd', '#ffde00', '#ff4d6d'], 
+            origin: { x: 0.9, y: 0.9 } 
+        });
     }
+
+    function updateDisplay() {
+        const now = new Date();
+        const m = now.getMonth() + 1;
+        const d = now.getDate();
+        const key = `${m}-${d}`;
+        const data = schedule[key] || { msg: "The squad is taking a break! Check back tomorrow.", img: "loading.webp" };
+
+        const imgElement = document.getElementById('plushie-img');
+        imgElement.src = data.img;
+        document.getElementById('msg').innerText = data.msg;
+
+        // BIRTHDAY SPECIAL: Automatic Grand Confetti Cannon
+        if (m === 4 && d === 14) {
+            document.getElementById('header').innerText = "HAPPY BIRTHDAY, E! 🎉";
+            
+            // This creates a continuous "rain" of grand confetti for the big day
+            var end = Date.now() + (15 * 1000);
+            var colors = ['#ff4d6d', '#ffde00', '#ffffff'];
+
+            (function frame() {
+              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: colors, scalar: 2 });
+              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: colors, scalar: 2 });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        const bday = new Date(2026, 3, 14);
+        const diff = bday - now;
+        if (diff > 0) {
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('countdown').innerText = `✨ ${days} DAYS UNTIL THE SURPRISE ✨`;
+        } else {
+            document.getElementById('countdown').innerText = "IT'S YOUR DAY! 🎉";
+        }
+    }    }
 
     function updateDisplay() {
         const now = new Date();
