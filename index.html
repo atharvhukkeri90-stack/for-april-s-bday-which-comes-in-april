@@ -34,28 +34,31 @@
     <div class="timezone-note">Sending love from 🇮🇳 to 🇨🇦</div>
 </div>
 
-<script>
+    <script>
     const schedule = {
         "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "cuddleton.webp" },
         "4-2":  { name: "Fuggler", msg: "Cuddleton is napping, so he sent this chaotic Fuggler to guard the site. 12 days to go! 👹✨", img: "fuggler.webp" },
         "4-3":  { name: "Waddleton Jr", msg: "Waddleton Jr traveled all the way from the North Pole just to wish you a great day. 🐧❄️", img: "waddleton.webp" },
+        "4-4":  { name: "Pikachu!", msg: "Pika-Pika! A wild birthday wish appeared! ⚡🎈", img: "pikachu.webp" },
         
-        // Added 4-5 as a backup for Pikachu
-        "4-4":  { name: "Pikachu!", msg: "Pika-Pika! A wild birthday wish appeared! 10 days to go until the big one! ⚡🎈", img: "pikachu.webp" },
-        "4-5":  { name: "Pikachu!", msg: "Pika-Pika! Pikachu is sticking around to make sure you have an electric day! ⚡🎈", img: "pikachu.webp" },
-        
+        // --- CATCHING UP FROM THE EXAM BREAK ---
+        "4-10": { name: "B-Day Cat", msg: "Exams are over and the countdown is BACK! This cat is getting the party hats ready. 🐱🎂", img: "cat.webp" },
+        "4-11": { name: "Star Plush", msg: "You're a star in every time zone. Shine bright today! ⭐", img: "star.webp" },
+        "4-12": { name: "Highland Cow", msg: "The fluffiest friend for the final countdown. 2 days left! 🐮☁️", img: "cow.webp" },
+        "4-13": { name: "Mystery Box", msg: "The big surprise is arriving tomorrow... are you ready? 🎁✨", img: "box.webp" },
         "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. 🎉🎈", video: "ebear.mp4" }
     };
 
     function addMoreFlowers() {
         const now = new Date();
         const day = now.getDate();
-        const count = Math.min(day * 15, 250); 
-        const size = 0.8 + (day / 10); 
+        // The grandeur is now massive because we are so close!
+        const count = Math.min(day * 20, 400); 
+        const size = 1.0 + (day / 10); 
 
         confetti({
             particleCount: count,
-            spread: 70 + (day * 2),
+            spread: 90,
             scalar: size,
             origin: { x: 0.9, y: 0.9 },
             colors: ['#ff85a1', '#fbb1bd', '#ffde00', '#ff4d6d']
@@ -68,8 +71,7 @@
         const d = now.getDate();
         const key = m + "-" + d;
         
-        // Find today's data or use Pikachu as the backup if it's currently April 4/5
-        const data = schedule[key] || schedule["4-4"]; 
+        const data = schedule[key] || schedule["4-10"]; 
 
         const container = document.getElementById('media-container');
 
@@ -83,7 +85,7 @@
               if (Date.now() < end) requestAnimationFrame(frame);
             }());
         } else {
-            container.innerHTML = `<img src="${data.img}" alt="Daily Friend" onerror="this.src='https://via.placeholder.com/300?text=Image+Not+Found'">`;
+            container.innerHTML = `<img src="${data.img}" alt="Daily Friend" onerror="this.src='https://via.placeholder.com/300?text=Uploading+Today's+Friend...'">`;
         }
 
         document.getElementById('msg').innerText = data.msg;
@@ -102,3 +104,5 @@
 
     window.onload = updateDisplay;
 </script>
+
+  
