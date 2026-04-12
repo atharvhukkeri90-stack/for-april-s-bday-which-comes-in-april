@@ -3,127 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For E 🧸</title>
+    <title>For Ekam 🧸</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { background-color: #fff5f7; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #4a4a4a; overflow-x: hidden; position: relative; }
-        .bouquet { position: fixed; bottom: 20px; right: 20px; font-size: 3.5rem; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1)); cursor: pointer; transition: 0.3s; z-index: 100; user-select: none; }
-        .bouquet:hover { transform: scale(1.2) rotate(10deg); }
+        body { background-color: #fff5f7; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #4a4a4a; overflow: hidden; position: relative; }
+        .bouquet { position: fixed; bottom: 20px; right: 20px; font-size: 3.5rem; cursor: pointer; z-index: 100; transition: 0.3s; user-select: none; }
+        .bouquet:hover { transform: scale(1.2); }
         .card { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 20px 50px rgba(255, 182, 193, 0.4); max-width: 380px; width: 90%; text-align: center; border: 2px solid #ffde00; position: relative; z-index: 10; }
-        .polaroid { background: white; padding: 15px 15px 45px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: 20px auto; border: 1px solid #eee; transform: rotate(-2deg); }
+        .polaroid { background: white; padding: 15px 15px 45px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: 20px auto; border: 1px solid #eee; transform: rotate(-2deg); cursor: pointer; }
         .media-frame { width: 100%; height: 300px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; border-radius: 5px; overflow: hidden; }
         img, video { width: 100%; height: 100%; object-fit: cover; }
-        h1 { color: #ff4d6d; font-size: 1.6rem; margin-bottom: 10px; }
-        #msg { font-size: 1rem; line-height: 1.5; color: #666; min-height: 60px; font-style: italic; }
+        h1 { color: #ff4d6d; font-size: 1.6rem; }
+        #msg { font-size: 1rem; line-height: 1.5; color: #666; font-style: italic; min-height: 60px; }
         .countdown-box { margin-top: 25px; font-size: 0.8rem; letter-spacing: 2px; color: #ff85a1; font-weight: bold; text-transform: uppercase; border-top: 1px dashed #ffd1dc; padding-top: 15px; }
-        .timezone-note { font-size: 0.7rem; color: #bbb; margin-top: 10px; }
         
-        /* --- TEASER TONGUE STYLE (Only shows on the 13th) --- */
-        #teaser-tongue { position: absolute; font-size: 4rem; pointer-events: none; opacity: 0; transition: opacity 0.3s; z-index: 200; transform: translate(-50%, -50%); display: none; }
-        #teaser-btn { position: fixed; bottom: 20px; left: 20px; font-size: 3rem; cursor: pointer; transition: 0.3s; z-index: 100; user-select: none; }
-        #teaser-btn:hover { transform: scale(1.2); }
+        /* Teaser Tongue Animation */
+        #teaser-tongue { position: fixed; font-size: 5rem; pointer-events: none; opacity: 0; z-index: 200; transform: translate(-50%, -50%); transition: opacity 0.2s; }
     </style>
 </head>
 <body>
 
 <div class="bouquet" onclick="addMoreFlowers()">💐</div>
-
-<div id="teaser-btn" onclick="activateTease()">👅</div>
 <div id="teaser-tongue">👅</div>
 
 <div class="card">
     <h1 id="header">Your Daily Friend 🧸</h1>
     <p id="msg">Thinking of you...</p>
-    <div class="polaroid">
-        <div class="media-frame" id="media-container">
-            </div>
+    <div class="polaroid" onclick="handleMediaClick()">
+        <div class="media-frame" id="media-container"></div>
     </div>
-    <div class="countdown-box" id="countdown">Calculating...</div>
-    <div class="timezone-note">Sending love from 🇮🇳 to 🇨🇦</div>
+    <div class="countdown-box" id="countdown">1 DAY TO GO...</div>
 </div>
 
 <script>
-    // --- 1. THE SCHEDULE ---
     const schedule = {
-        "4-1":  { name: "Cuddleton", msg: "Cuddleton is here! Just a reminder that even from across the ocean, you're always on my mind. 🧸💖", img: "cuddleton.webp" },
-        "4-2":  { name: "Fuggler", msg: "Cuddleton is napping, so he sent this chaotic Fuggler to guard the site. 12 days to go! 👹✨", img: "fuggler.webp" },
-        "4-3":  { name: "Waddleton Jr", msg: "Waddleton Jr traveled all the way from the North Pole just to wish you a great day. 🐧❄️", img: "waddleton.webp" },
-        "4-4":  { name: "Pikachu!", msg: "Pika-Pika! A wild birthday wish appeared! ⚡🎈", img: "pikachu.webp" },
-        "4-10": { name: "B-Day Cat", msg: "Exams are over and the countdown is BACK! This cat is getting the party hats ready. 🐱🎂", img: "cat.webp" },
-        "4-11": { name: "Star Plush", msg: "You're a star in every time zone. Shine bright today! ⭐", img: "star.webp" },
-        "4-12": { name: "Highland Cow", msg: "The fluffiest friend for the final countdown. 2 days left! 🐮☁️", img: "cow.webp" },
-        
-        // --- APRIL 13th: THE TEASER DAY ---
-        "4-13": { name: "Mystery Box", msg: "The final box... but are you *actually* ready for tomorrow? Try clicking the '👅' in the corner! 🎁✨", img: "box.webp" },
-        
-        "4-14": { name: "E-Bear Reveal", msg: "HAPPY BIRTHDAY E! You deserve all the love in the world. 🎉🎈", video: "ebear.mp4" }
+        "4-13": { msg: "The final box... Click it if you dare! 🎁✨", img: "box.webp" },
+        "4-14": { msg: "HAPPY BIRTHDAY EKAM!! 🎉🎈", video: "ebear.mp4" }
     };
 
-    // --- 2. THE TEASE FUNCTION (April 13th only) ---
+    function addMoreFlowers() {
+        const day = new Date().getDate();
+        confetti({
+            particleCount: Math.min(day * 20, 300),
+            spread: 90,
+            scalar: 1.5,
+            origin: { x: 0.9, y: 0.9 },
+            colors: ['#ff85a1', '#ffde00', '#ff4d6d']
+        });
+    }
+
+    function handleMediaClick() {
+        const now = new Date();
+        if (now.getMonth() === 3 && now.getDate() === 13) {
+            activateTease();
+        }
+    }
+
     function activateTease() {
         const tongue = document.getElementById('teaser-tongue');
-        if (tongue.style.display === 'none') return; // Exit if not the 13th
-
-        // Make the tongue visible
         tongue.style.opacity = '1';
-
-        // Add the mouse chaser function
-        document.onmousemove = function(e) {
-            tongue.style.left = (e.clientX + 10) + 'px';
-            tongue.style.top = (e.clientY + 10) + 'px';
+        document.onmousemove = (e) => {
+            tongue.style.left = e.clientX + 'px';
+            tongue.style.top = e.clientY + 'px';
         };
-
-        // Hide it again after 5 seconds
-        setTimeout(function() {
+        setTimeout(() => {
             tongue.style.opacity = '0';
-            document.onmousemove = null; // Remove the mouse chaser
+            document.onmousemove = null;
         }, 5000);
     }
 
-    // --- 3. DISPLAY LOGIC ---
     function updateDisplay() {
         const now = new Date();
         const m = now.getMonth() + 1;
         const d = now.getDate();
         const key = m + "-" + d;
-        
-        // --- 3a. Teaser Button Logic (Only show on the 13th) ---
-        if (m === 4 && d === 13) {
-            document.getElementById('teaser-btn').style.display = 'block';
-            document.getElementById('teaser-tongue').style.display = 'block';
-        } else {
-            document.getElementById('teaser-btn').style.display = 'none';
-            document.getElementById('teaser-tongue').style.display = 'none';
-        }
+        const data = schedule[key] || schedule["4-13"];
 
-        const data = schedule[key] || schedule["4-10"]; 
         const container = document.getElementById('media-container');
-
         if (m === 4 && d === 14) {
-            document.getElementById('header').innerText = "HAPPY BIRTHDAY, E! 🎉";
-            container.innerHTML = `<video id="bdayVideo" controls autoplay loop style="width:100%; height:100%; object-fit:cover;"><source src="${data.video}" type="video/mp4"></video>`;
-            var end = Date.now() + (15 * 1000);
+            document.getElementById('header').innerText = "HAPPY BIRTHDAY! 🎉";
+            container.innerHTML = `<video autoplay loop controls><source src="${data.video}" type="video/mp4"></video>`;
+            // Auto Birthday Confetti
+            var end = Date.now() + 10000;
             (function frame() {
-              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, scalar: 2, colors: ['#ff4d6d', '#ffde00'] });
-              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, scalar: 2, colors: ['#ff4d6d', '#ffde00'] });
-              if (Date.now() < end) requestAnimationFrame(frame);
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, scalar: 2 });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, scalar: 2 });
+                if (Date.now() < end) requestAnimationFrame(frame);
             }());
         } else {
-            container.innerHTML = `<img src="${data.img}" alt="Daily Friend" onerror="this.src='https://via.placeholder.com/300?text=Uploading+Today's+Friend...'">`;
+            container.innerHTML = `<img src="${data.img}" onerror="this.src='https://via.placeholder.com/300?text=Mystery+Box'">`;
         }
-
         document.getElementById('msg').innerText = data.msg;
-
-        const bdayDate = new Date(2026, 3, 14);
-        const diff = bdayDate - now;
-        const countdownElement = document.getElementById('countdown');
-        
-        if (diff > 0) {
-            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            countdownElement.innerText = "✨ " + daysLeft + " DAYS UNTIL THE SURPRISE ✨";
-        } else {
-            countdownElement.innerText = "IT'S FINALLY YOUR DAY! 🎂";
-        }
     }
 
     window.onload = updateDisplay;
