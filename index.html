@@ -32,10 +32,7 @@
     <div class="polaroid" onclick="handleMediaClick()">
         <div class="media-frame" id="media-container"></div>
     </div>
-    <div class="countdown-box" id="countdown">1 DAY TO GO...</div>
-<div style="font-size: 0.6rem; color: #eee; margin-top: 10px;">
-    Views: <img src="https://hitwebcounter.com/counter/counter.php?page=YOUR_UNIQUE_ID&style=0006&nbdigits=3&type=page&initCount=0" title="Free Counter" Alt="web counter" border="0" />
-</div>
+    
 
 <script>
     const schedule = {
@@ -100,6 +97,9 @@
 
     window.onload = updateDisplay;
 </script>
+    <div style="position: fixed; bottom: 5px; left: 8px; font-size: 8px; color: rgba(0,0,0,0.15); font-family: sans-serif; display: flex; align-items: center; gap: 3px;">
+    views: <img src="https://hitwebcounter.com/counter/counter.php?page=YOUR_UNIQUE_ID&style=0006&nbdigits=3&type=page&initCount=0" style="height: 10px; width: auto; opacity: 0.4; filter: grayscale(100%);" />
+</div>
 </body>
 </html>
 
